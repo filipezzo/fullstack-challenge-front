@@ -19,6 +19,7 @@ interface CartContextValues {
   onIncreaseQuantity: (id: string) => void;
   onDecreaseQuantity: (id: string) => void;
   onDeleteProduct: (id: string) => void;
+  onClearCart: () => void;
 }
 
 export const CartContext = createContext({} as CartContextValues);
@@ -75,6 +76,8 @@ export function CartProvider({ children }: CartProviderProps) {
     [cart],
   );
 
+  const handleClearCart = () => setCart([]);
+
   return (
     <CartContext.Provider
       value={{
@@ -85,6 +88,7 @@ export function CartProvider({ children }: CartProviderProps) {
         onIncreaseQuantity: handleIncrementQuantity,
         onDecreaseQuantity: handleDecreaseQuantity,
         onDeleteProduct: handleDeleteProduct,
+        onClearCart: handleClearCart,
       }}
     >
       {children}
