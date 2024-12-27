@@ -2,10 +2,13 @@ import { Search, ShoppingBag } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Container } from "../components/container";
+import { useCart } from "../hooks/useCart";
 
 export function HeaderLayout() {
   const [query, setQuery] = useState("");
   const [, setSearchParams] = useSearchParams();
+
+  const { cartLength } = useCart();
 
   const handleSetSearch = useCallback(
     (search: string) => {
@@ -53,9 +56,12 @@ export function HeaderLayout() {
               <Search size={24} className="size-4 md:size-6" />
             </button>
           </form>
-          <button>
+          <Link to={"/checkout"} className="relative">
             <ShoppingBag />
-          </button>
+            <div className="absolute -bottom-2 -right-2 grid size-4 place-items-center rounded-full bg-red-500 text-xs">
+              {cartLength}
+            </div>
+          </Link>
         </nav>
       </Container>
     </header>

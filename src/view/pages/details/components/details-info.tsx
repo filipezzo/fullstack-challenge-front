@@ -1,7 +1,8 @@
-import { ShoppingBag } from "lucide-react";
+import { Check, ShoppingBag } from "lucide-react";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
 import { Product } from "../../../../app/models/product";
 import { Loading } from "../../../components/loading";
+import { useCart } from "../../../hooks/useCart";
 
 interface DetailsInfoProps {
   isLoading: boolean;
@@ -9,12 +10,22 @@ interface DetailsInfoProps {
 }
 
 export function DetailsInfo({ isLoading, details }: DetailsInfoProps) {
-  if (isLoading) {
-    return <Loading />;
-  }
+  const { onAddToCart, cart } = useCart();
+
   if (!details) {
     return;
   }
+
+  const isAddedToCart = cart.find((p) => p.id === details.id);
+
+  const handleAddToCart = () => {
+    onAddToCart(details);
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <section className="flex flex-col gap-8 md:flex-row">
       <div className="overflow-hidden rounded-md border md:max-h-[580px] md:min-w-[640px]">
@@ -44,9 +55,13 @@ export function DetailsInfo({ isLoading, details }: DetailsInfoProps) {
             inserido nesse campo, descrevendo tal produto.
           </p>
         </div>
-        <button className="mt-auto flex h-11 items-center justify-center gap-5 rounded-md bg-[#115D8C] py-2.5 font-medium text-[#F5F5FA] transition-all hover:opacity-80">
-          <ShoppingBag />
-          Adicionar ao carrinho
+        <button
+          onClick={handleAddToCart}
+          disabled={!!isAddedToCart}
+          className="mt-auto flex h-11 items-center justify-center gap-5 rounded-md bg-[#115D8C] py-2.5 font-medium text-[#F5F5FA] transition-all hover:opacity-80 disabled:opacity-50"
+        >
+          {isAddedToCart ? <Check /> : <ShoppingBag />}
+          {isAddedToCart ? "Adicionado" : "Adicionar ao carrinho"}
         </button>
       </div>
     </section>
