@@ -8,10 +8,10 @@ interface HomeListProps {
 
 export function HomeListItem({ product }: HomeListProps) {
   return (
-    <li key={product.id}>
+    <li className="overflow-hidden rounded-md" key={product.id}>
       <Link
         to={`/produto/${product.id}`}
-        className="h-[378px] w-full overflow-hidden rounded-md md:max-w-64"
+        className="h-[378px] w-full transition-all hover:opacity-80 md:max-w-64"
       >
         <img
           className="h-[300px] w-full object-cover"
